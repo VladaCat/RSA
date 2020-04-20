@@ -1,0 +1,25 @@
+ static void Main(string[] args)
+    {
+        RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
+        //Пункт 2
+        privateKey = RSA.ExportParameters(true);
+        publicKey = RSA.ExportParameters(false);
+
+        UnicodeEncoding byteConverter = new UnicodeEncoding();
+        string toEncrypt = "Hello, world";
+
+        Console.WriteLine($"To encode: {toEncrypt}");
+
+        byte[] encBytes = RSAEncrypt(byteConverter.GetBytes(toEncrypt), publicKey, false);
+
+        string encrypt = byteConverter.GetString(encBytes);
+        Console.WriteLine("Encrypt str: " + encrypt);
+        Console.WriteLine("Encrypt bytes: " + string.Join(", ", encBytes));
+
+        byte[] decBytes = RSADecrypt(encBytes, privateKey, false);
+
+        Console.WriteLine("Decrypt str: " + byteConverter.GetString(decBytes));
+        Console.WriteLine("Decrypt bytes: " + string.Join(", ", byteConverter.GetBytes(encrypt)));
+
+        Console.ReadKey();
+    }
